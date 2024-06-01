@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, Button,Modal,SafeAreaView, PanResponder, Alert  } from "react-native";
+import { View, Text, FlatList, Button, Modal, PanResponder, Alert  } from "react-native";
 import { Card, Image, Rating, Icon ,Input} from "react-native-elements";
 import { ScrollView } from 'react-native-virtualized-view';
 import { baseUrl } from '../shared/baseUrl';
@@ -18,28 +18,26 @@ class ModalContent extends Component {
   }
   render() {
     return (
-      <SafeAreaView>
-        <View style={{ justifyContent: 'center', margin: 20 }}>
-          <Rating startingValue={this.state.rating} showRating={true}
-            onFinishRating={(value) => this.setState({ rating: value })} />
-          <View style={{ height: 20 }} />
-          <Input value={this.state.author} placeholder='Author' leftIcon={{ name: 'user-o', type: 'font-awesome' }}
-            onChangeText={(text) => this.setState({ author: text })} />
-          <Input value={this.state.comment} placeholder='Comment' leftIcon={{ name: 'comment-o', type: 'font-awesome' }}
-            onChangeText={(text) => this.setState({ comment: text })} />
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Button title='SUBMIT' color='#7cc'
-              onPress={() => this.handleSubmit()} />
-            <View style={{ width: 10 }} />
-            <Button title='CANCEL' color='#7cc'
-              onPress={() => this.props.onPressCancel()} />
-          </View>
+      <View style={{ justifyContent: 'center', margin: 20 }}>
+        <Rating startingValue={this.state.rating} showRating={true}
+          onFinishRating={(value) => this.setState({ rating: value })} />
+        <View style={{ height: 20 }} />
+        <Input value={this.state.author} placeholder='Author' leftIcon={{ name: 'user-o', type: 'font-awesome' }}
+          onChangeText={(text) => this.setState({ author: text })} />
+        <Input value={this.state.comment} placeholder='Comment' leftIcon={{ name: 'comment-o', type: 'font-awesome' }}
+          onChangeText={(text) => this.setState({ comment: text })} />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Button title='SUBMIT' color='#7cc'
+            onPress={() => this.handleSubmit()} />
+          <View style={{ width: 10 }} />
+          <Button title='CANCEL' color='#ccc'
+            onPress={() => this.props.onPressCancel()} />
         </View>
-      </SafeAreaView>
-
+      </View>
     );
   }
   handleSubmit() {
+    //alert(this.props.dishId + ':' + this.state.rating + ':' + this.state.author + ':' + this.state.comment);
     this.props.postComment(this.props.dishId, this.state.rating, this.state.author, this.state.comment);
     this.props.onPressCancel();
   }
@@ -77,6 +75,10 @@ class RenderDish extends Component {
       if (dx < -200) return 1; // right to left
       return 0;
     };
+const recognizeComment = ({ moveX, moveY, dx, dy }) => {
+      if (dx > 200) return 2; // left to right
+      return 0;
+    };
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => { return true; },
       onPanResponderEnd: (e, gestureState) => {
@@ -89,6 +91,9 @@ class RenderDish extends Component {
               { text: 'OK', onPress: () => { this.props.favorite ? alert('Already favorite') : this.props.onPressFavorite() } },
             ]
           );
+        }
+        if (recognizeComment(gestureState) === 2) {
+          this.props.onPressComment()
         }
         return true;
       }
@@ -111,11 +116,11 @@ class RenderDish extends Component {
           </Image>
           <Text style={{ margin: 10 }}>{dish.description}</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <Icon raised reverse name={this.props.favorite ? 'heart' : 'heart-o'} type='font-awesome' color='#f50'
-              onPress={() => this.props.favorite ? alert('Already favorite') : this.props.onPressFavorite()} />
-            <Icon raised reverse name='pencil' type='font-awesome' color='#f50'
-              onPress={() => this.props.onPressComment()} />
-          </View>
+          <Icon raised reverse name={this.props.favorite ? 'heart' : 'heart-o'} type='font-awesome' color='#f50'
+            onPress={() => this.props.favorite ? alert('Already favorite') : this.props.onPressFavorite()} />
+          <Icon raised reverse name='pencil' type='font-awesome' color='#7cc'
+            onPress={() => this.props.onPressComment()} />
+         </View>
         </Card>
       );
     }
@@ -141,11 +146,6 @@ const mapDispatchToProps = (dispatch) => ({
 class Dishdetail extends Component {
     constructor(props) {
       super(props);
-      /*this.state = {
-        // dishes: DISHES,
-        // comments: COMMENTS,
-        favorites: []
-      };*/
       this.state = {
         showModal: false
       };
@@ -158,15 +158,16 @@ class Dishdetail extends Component {
       return (
         <ScrollView>
           <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
-            <RenderDish dish={dish} favorite={favorite} onPressFavorite={() => this.markFavorite(dishId)} onPressComment={() => this.setState({ showModal: true })} />
+<RenderDish dish={dish} favorite={favorite} onPressFavorite={() => this.markFavorite(dishId)} onPressComment={() => this.setState({ showModal: true })}  />
           </Animatable.View>
           <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
-            <RenderComments comments={comments} />
+          <RenderComments comments={comments} />
           </Animatable.View>
           <Modal animationType={'slide'} visible={this.state.showModal}
-            onRequestClose={() => this.setState({ showModal: false })}>
+          onRequestClose={() => this.setState({ showModal: false })}>
           <ModalContent dishId={dishId}
-            onPressCancel={() => this.setState({ showModal: false })} postComment={this.props.postComment} />
+            onPressCancel={() => this.setState({ showModal: false })} 
+            postComment={this.props.postComment}/>
         </Modal>
         </ScrollView>
       );
