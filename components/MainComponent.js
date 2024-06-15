@@ -13,6 +13,68 @@ import Menu from './MenuComponent';
 import About from './AboutComponent';
 import Dishdetail from './DishdetailComponent';
 import Reservation from './ReservationComponent';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import Favorites from './FavoriteComponent';
+function FavoritesNavigatorScreen() {
+  const FavoritesNavigator = createStackNavigator();
+  return (
+    <FavoritesNavigator.Navigator initialRouteName='Favorites'
+      screenOptions={{
+        headerStyle: { backgroundColor: '#7cc' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { color: '#fff' }
+      }}>
+      <FavoritesNavigator.Screen name='Favorites' component={Favorites}
+        options={({ navigation }) => ({
+          headerTitle: 'My Favorites',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
+      <FavoritesNavigator.Screen name='Dishdetail' component={Dishdetail}
+        options={{ headerTitle: 'Dish Detail' }} />
+    </FavoritesNavigator.Navigator>
+  );
+}
+
+import Login from './LoginComponent';
+function LoginNavigatorScreen() {
+  const LoginNavigator = createStackNavigator();
+  return (
+    <LoginNavigator.Navigator initialRouteName='LoginRegister'
+      screenOptions={{
+        headerStyle: { backgroundColor: '#7cc' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { color: '#fff' }
+      }}>
+       <LoginNavigator.Screen name='LoginRegister' component={TabNavigatorScreen}
+        options={({ navigation }) => ({
+          headerTitle: 'Login',
+          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
+        })} />
+    </LoginNavigator.Navigator>
+  );
+}
+
+import Register from './RegisterComponent';
+function TabNavigatorScreen() {
+  const TabNavigator = createBottomTabNavigator();
+  return (
+    <TabNavigator.Navigator initialRouteName='Login'>
+      <TabNavigator.Screen name='Login' component={Login}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (<Icon name='sign-in' type='font-awesome' size={size} color={color} />)
+        }} />
+      <TabNavigator.Screen name='Register' component={Register}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (<Icon name='user-plus' type='font-awesome' size={size} color={color} />)
+        }} />
+    </TabNavigator.Navigator>
+  );
+}
+
+
 
 function ReservationNavigatorScreen() {
   const ReservationNavigator = createStackNavigator();
@@ -120,27 +182,6 @@ function HomeNavigatorScreen() {
   );
 }
 
-import Favorites from './FavoriteComponent';
-function FavoritesNavigatorScreen() {
-  const FavoritesNavigator = createStackNavigator();
-  return (
-    <FavoritesNavigator.Navigator initialRouteName='Favorites'
-      screenOptions={{
-        headerStyle: { backgroundColor: '#7cc' },
-        headerTintColor: '#fff',
-        headerTitleStyle: { color: '#fff' }
-      }}>
-      <FavoritesNavigator.Screen name='Favorites' component={Favorites}
-        options={({ navigation }) => ({
-          headerTitle: 'My Favorites',
-          headerLeft: () => (<Icon name='menu' size={36} color='#fff' onPress={() => navigation.toggleDrawer()} />)
-        })} />
-      <FavoritesNavigator.Screen name='Dishdetail' component={Dishdetail}
-        options={{ headerTitle: 'Dish Detail' }} />
-    </FavoritesNavigator.Navigator>
-  );
-}
-
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
@@ -149,7 +190,7 @@ function CustomDrawerContent(props) {
           <Image source={{ uri: baseUrl + 'images/logo.png' }} style={{ margin: 10, width: 80, height: 60 }} />
         </View>
         <View style={{ flex: 2 }}>
-          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>KhaHC</Text>
+          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>HanLG</Text>
         </View>
       </View>
       <DrawerItemList {...props} />
@@ -193,7 +234,12 @@ function MainNavigatorScreen() {
         options={{
           title: 'My Favorites', headerShown: false,
           drawerIcon: ({ focused, size }) => (<Icon name='heart' type='font-awesome' size={size} color={focused ? '#7cc' : '#ccc'} />)
-        }} />  
+        }} />
+      <MainNavigator.Screen name='LoginScreen' component={LoginNavigatorScreen}
+        options={{
+          title: 'Login', headerShown: false,
+          drawerIcon: ({ focused, size }) => (<Icon name='sign-in' type='font-awesome' size={size} color={focused ? '#7cc' : '#ccc'} />)
+        }} />
     </MainNavigator.Navigator>
   );
 }

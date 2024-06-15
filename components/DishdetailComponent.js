@@ -158,7 +158,7 @@ class Dishdetail extends Component {
       return (
         <ScrollView>
           <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
-<RenderDish dish={dish} favorite={favorite} onPressFavorite={() => this.markFavorite(dishId)} onPressComment={() => this.setState({ showModal: true })}  />
+          <RenderDish dish={dish} favorite={favorite} onPressFavorite={() => this.markFavorite(dishId)} onPressComment={() => this.setState({ showModal: true })}  />
           </Animatable.View>
           <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
           <RenderComments comments={comments} />
