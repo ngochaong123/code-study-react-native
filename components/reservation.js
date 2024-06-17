@@ -64,7 +64,7 @@ class Reservation extends Component {
           <View style={styles.formRow}>
             <Button title='Reserve' color='#7cc' onPress={() => this.handleReservation()} />
           </View>
-{/* <Modal animationType={'slide'} visible={this.state.showModal}
+          {/* <Modal animationType={'slide'} visible={this.state.showModal}
 onRequestClose={() => this.setState({ showModal: false })}>
             <ModalContent guests={this.state.guests} smoking={this.state.smoking} date={this.state.date}
               onPressClose={() => this.setState({ showModal: false })} />
@@ -83,7 +83,6 @@ onRequestClose={() => this.setState({ showModal: false })}>
       [
         { text: 'Cancel', onPress: () => this.resetForm() },
         { text: 'OK', onPress: () => {
-          this.addReservationToCalendar(this.state.date);
           this.presentLocalNotification(this.state.date);
           this.resetForm();
         }},
@@ -147,6 +146,6 @@ const styles = StyleSheet.create({
   formLabel: { fontSize: 18, flex: 2 },
   formItem: { flex: 1 },
   modal: { justifyContent: 'center', margin: 20 },
-modalTitle: { fontSize: 24, fontWeight: 'bold', backgroundColor: '#7cc', textAlign: 'center', color: 'white', marginBottom: 20 },
+  modalTitle: { fontSize: 24, fontWeight: 'bold', backgroundColor: '#7cc', textAlign: 'center', color: 'white', marginBottom: 20 },
   modalText: { fontSize: 18, margin: 10 },
 });

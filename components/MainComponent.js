@@ -190,7 +190,7 @@ function CustomDrawerContent(props) {
           <Image source={{ uri: baseUrl + 'images/logo.png' }} style={{ margin: 10, width: 80, height: 60 }} />
         </View>
         <View style={{ flex: 2 }}>
-          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>HanLG</Text>
+          <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold' }}>KhaHC</Text>
         </View>
       </View>
       <DrawerItemList {...props} />
