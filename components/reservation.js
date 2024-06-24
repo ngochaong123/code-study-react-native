@@ -83,6 +83,7 @@ onRequestClose={() => this.setState({ showModal: false })}>
       [
         { text: 'Cancel', onPress: () => this.resetForm() },
         { text: 'OK', onPress: () => {
+          this.addReservationToCalendar(this.state.date);
           this.presentLocalNotification(this.state.date);
           this.resetForm();
         }},
